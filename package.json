@@ -1,0 +1,16 @@
+{
+  "name": "goodstore",
+  "version": "1.0.0",
+  "description": "GoodStore app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/izzuzantyaf/goodstore.git"
+  },
+  "private": true,
+  "author": "Izzu Zantya Fawwas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/izzuzantyaf/goodstore/issues"
+  },
+  "homepage": "https://github.com/izzuzantyaf/goodstore#readme"
+}
