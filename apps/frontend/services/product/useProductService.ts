@@ -16,8 +16,8 @@ export function useProductService(
   });
 
   const updateMutation = useMutation({
-    mutationFn: (id: string, data: UpdateProductDto) =>
-      productService.update(id, data),
+    mutationFn: (id: string, updateProductDto: UpdateProductDto) =>
+      productService.update(id, updateProductDto),
   });
 
   const deleteProductMutation = useMutation({
