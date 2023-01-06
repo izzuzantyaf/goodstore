@@ -1,21 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { OmitType, PartialType } from '@nestjs/swagger';
+import { User } from './user.entity';
 
-export class CreateUserDto {
-  @ApiProperty()
-  name: string;
-  @ApiProperty()
-  email: string;
-  @ApiProperty()
-  password: string;
-}
+export class CreateUserDto extends OmitType(User, ['id']) {}
 
-export class UpdateUserDto {
-  @ApiProperty()
-  id: number | string;
-  @ApiProperty()
-  name?: string;
-  @ApiProperty()
-  email?: string;
-  @ApiProperty()
-  password?: string;
-}
+export class UpdateUserDto extends PartialType(
+  OmitType(CreateUserDto, ['email', 'password']),
+) {}

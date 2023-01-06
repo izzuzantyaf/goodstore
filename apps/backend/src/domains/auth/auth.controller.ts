@@ -30,7 +30,10 @@ export class AuthController {
       req.body.username,
       req.body.password,
     );
-    return new SuccessfulResponse('Login berhasil', { access_token });
+    return new SuccessfulResponse({
+      message: 'Login berhasil',
+      data: { access_token },
+    });
   }
 
   @Get('verify')
@@ -47,6 +50,9 @@ export class AuthController {
     );
     const access_token = req.headers.authorization.split(' ')[1];
     const decodedPayload = this.authService.verifyAccessToken(access_token);
-    return new SuccessfulResponse('Access token valid', decodedPayload);
+    return new SuccessfulResponse({
+      message: 'Access token valid',
+      data: decodedPayload,
+    });
   }
 }

@@ -4,7 +4,7 @@ import { Logger } from '@nestjs/common/services';
 import { ErrorResponse } from 'src/lib/response.dto';
 import { isJWT } from 'class-validator';
 import { UserService } from '../user/user.service';
-import { User } from '../user/entities/user.entity';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -50,7 +50,9 @@ export class AuthService {
       )}`,
     );
     if (!isJWT(accessToken)) {
-      throw new UnauthorizedException(new ErrorResponse('Token tidak valid'));
+      throw new UnauthorizedException(
+        new ErrorResponse({ message: 'Token tidak valid' }),
+      );
     }
     const decodedPayload = this.jwtService.verify(accessToken, {
       secret: process.env.JWT_SECRET,

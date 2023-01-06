@@ -7,6 +7,8 @@ import { UserController } from 'src/domains/user/user.controller';
 import { UserModule } from 'src/domains/user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthModule } from './auth.module';
+import { User } from '../user/user.entity';
+import { Gender } from 'src/lib/constants';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -27,10 +29,11 @@ describe('AuthController', () => {
   });
 
   describe('signin()', () => {
-    const fakeUser = {
+    const fakeUser: User = {
       name: faker.name.fullName(),
       email: faker.internet.email(),
       password: 'helloworld',
+      gender: Math.random() > 0.5 ? Gender.FEMALE : Gender.MALE,
     };
     beforeAll(async () => {
       await userController.create(fakeUser);
@@ -56,10 +59,11 @@ describe('AuthController', () => {
   });
 
   describe('verify()', () => {
-    const fakeUser = {
+    const fakeUser: User = {
       name: faker.name.fullName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
+      gender: Math.random() > 0.5 ? Gender.FEMALE : Gender.MALE,
     };
     let access_token: string;
     beforeAll(async () => {

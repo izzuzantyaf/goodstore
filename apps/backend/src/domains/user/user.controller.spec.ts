@@ -1,17 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from '../user.controller';
+import { UserController } from './user.controller';
 import { SuccessfulResponse } from 'src/lib/response.dto';
-import { UserModule } from 'src/use-cases/user/user.module';
-import { User } from 'src/use-cases/user/entities/user.entity';
+import { UserModule } from 'src/domains/user/user.module';
+import { User } from 'src/domains/user/user.entity';
 import { faker } from '@faker-js/faker';
 import { BadRequestException, ConflictException } from '@nestjs/common';
-import { UpdateUserDto } from '../dto/user.dto';
+import { Gender } from 'src/lib/constants';
 
-const createFakeUser = () => ({
-  name: faker.name.fullName(),
-  email: faker.internet.email(),
-  password: 'helloworld',
-});
+function createFakeUser(): User {
+  const gender = Math.random() > 0.5 ? Gender.FEMALE : Gender.MALE;
+  return {
+    name: faker.name.fullName({ sex: gender }),
+    email: faker.internet.email(),
+    password: 'helloworld',
+    gender,
+  };
+}
 
 describe('UserController', () => {
   let controller: UserController;
@@ -104,15 +108,6 @@ describe('UserController', () => {
     });
   });
 
-  describe('getAll()', () => {
-    it(`should return object instance of ${SuccessfulResponse.name} and the users data`, async () => {
-      const response = await controller.getAll();
-      const users = response.data as User[];
-      expect(await controller.getAll()).toBeInstanceOf(SuccessfulResponse);
-      expect(users.every((user) => user instanceof User)).toBeTruthy();
-    });
-  });
-
   describe('update()', () => {
     let storedUser: User;
     beforeAll(async () => {
@@ -121,34 +116,34 @@ describe('UserController', () => {
     });
     it(`should return object instance of ${SuccessfulResponse.name} and updated user`, async () => {
       const modifiedUser = { ...storedUser, name: faker.name.fullName() };
-      const result = await controller.update({
+      const result = await controller.update(storedUser.id, {
         ...modifiedUser,
-      } as UpdateUserDto);
+      });
       expect(result).toBeInstanceOf(SuccessfulResponse);
       expect(result.data.name).toEqual(modifiedUser.name);
     });
     it(`should throw ${BadRequestException.name} because name is not string`, async () => {
       await expect(
-        controller.update({
+        controller.update(storedUser.id, {
           ...storedUser,
           name: 123 as unknown as string,
-        } as UpdateUserDto),
+        }),
       ).rejects.toThrow(BadRequestException);
     });
     it(`should throw ${BadRequestException.name} because name is empty`, async () => {
       await expect(
-        controller.update({
+        controller.update(storedUser.id, {
           ...storedUser,
           name: '',
-        } as UpdateUserDto),
+        }),
       ).rejects.toThrow(BadRequestException);
     });
     it(`should throw ${BadRequestException.name} because name exeeds max character`, async () => {
       await expect(
-        controller.update({
+        controller.update(storedUser.id, {
           ...storedUser,
           name: 'namenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamename',
-        } as UpdateUserDto),
+        }),
       ).rejects.toThrow(BadRequestException);
     });
   });
