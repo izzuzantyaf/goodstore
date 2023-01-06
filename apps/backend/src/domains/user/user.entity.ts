@@ -7,6 +7,7 @@ import {
   minLength,
 } from 'class-validator';
 import { Gender } from 'src/lib/constants';
+import { Product } from '../product/product.entity';
 
 /**
  * @description Class yang merepresentasikan data user pada database
@@ -19,14 +20,25 @@ export class User {
   password: string;
   readonly createdAt?: Date | string;
   readonly updatedAt?: Date | string;
+  products?: Product[];
 
   constructor(props: Partial<User> = {}) {
-    const { id, name, email, password, gender, createdAt, updatedAt } = props;
+    const {
+      id,
+      name,
+      email,
+      password,
+      gender,
+      products,
+      createdAt,
+      updatedAt,
+    } = props;
     this.id = id;
     this.name = name;
     this.email = email;
     this.password = password;
     this.gender = gender;
+    this.products = products;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }

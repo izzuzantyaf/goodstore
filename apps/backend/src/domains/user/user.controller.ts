@@ -24,7 +24,8 @@ export class UserController {
 
   @Get(':id')
   async findById(@Param('id') id: string) {
-    return;
+    const user = await this.userService.findById(id);
+    return new SuccessfulResponse({ message: 'Sukses', data: user });
   }
 
   @Patch(':id')

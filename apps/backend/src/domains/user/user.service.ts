@@ -71,6 +71,11 @@ export class UserService {
     return storedUser;
   }
 
+  async findById(id: string) {
+    const user = await this.dataService.user.findById(id);
+    return user;
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     this.logger.debug(
       `updateUserDto ${JSON.stringify(updateUserDto, undefined, 2)}`,

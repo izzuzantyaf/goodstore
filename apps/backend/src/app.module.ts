@@ -7,9 +7,10 @@ import {
 import { UserModule } from './domains/user/user.module';
 import { AuthModule } from './domains/auth/auth.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { ProductModule } from './domains/product/product.module';
 
 @Module({
-  imports: [UserModule, AuthModule],
+  imports: [UserModule, AuthModule, ProductModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
