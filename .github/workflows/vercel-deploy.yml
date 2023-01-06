@@ -24,15 +24,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7
       - name: Install dependencies
-        run: pnpm install
+        run: yarn install
         working-directory: ${{ inputs.working-directory }}
       - name: Install Vercel CLI
-        run: pnpm add vercel --global
+        run: yarn global add vercel
       - name: Set up environment variables on Vercel
         working-directory: ${{ inputs.working-directory }}
         run: |
