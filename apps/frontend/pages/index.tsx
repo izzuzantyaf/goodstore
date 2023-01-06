@@ -28,7 +28,10 @@ import { authService } from "../services/auth/auth.service";
 import { User } from "../services/user/entity/user.entity";
 import { useUserService } from "../services/user/useUserService";
 import { useProductService } from "../services/product/useProductService";
-import { CreateProductDto } from "../services/product/product.dto";
+import {
+  CreateProductDto,
+  UpdateProductDto,
+} from "../services/product/product.dto";
 
 type Data = {
   user: User;
@@ -54,11 +57,11 @@ export default function HomePage({
       response: createProductResponse,
     },
     update: {
-      run: updateProduct,
       isLoading: isUpdateProductLoading,
       isSuccess: isUpdateProductSuccess,
       isError: isUpdateProductError,
       response: updateProductResponse,
+      run: updateProduct,
     },
     findByUserId: {
       isLoading: isProductLoading,
@@ -389,7 +392,10 @@ export default function HomePage({
               const formData = new FormData(form);
               const data = Object.fromEntries(formData.entries());
               console.log("UpdateProductDto", data);
-              updateProduct(productIdWantToUpdated as string, data);
+              updateProduct({
+                id: productIdWantToUpdated as string,
+                updateProductDto: data as UpdateProductDto,
+              });
             }}
           >
             <TextInput

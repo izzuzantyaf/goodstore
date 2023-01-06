@@ -15,19 +15,24 @@ export function useProductService(
     mutationFn: productService.create,
   });
 
-  const updateMutation = useMutation({
-    mutationFn: (id: string, updateProductDto: UpdateProductDto) =>
-      productService.update(id, updateProductDto),
-  });
-
-  const deleteProductMutation = useMutation({
-    mutationFn: (id: string) => productService.deleteById(id),
-  });
-
   const findByUserIdQuery = useQuery({
     queryKey: ["product_by_user_id", userId],
     queryFn: () => productService.findByUserId(userId as string),
     enabled: userId === null || userId === undefined ? false : true,
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({
+      id,
+      updateProductDto,
+    }: {
+      id: string;
+      updateProductDto: UpdateProductDto;
+    }) => productService.update(id, updateProductDto),
+  });
+
+  const deleteProductMutation = useMutation({
+    mutationFn: (id: string) => productService.deleteById(id),
   });
 
   return {
